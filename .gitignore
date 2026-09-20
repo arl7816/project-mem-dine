@@ -1,6 +1,7 @@
 # general
 .env
 /mem-dine-backend/venv
+*.pyc
 
 
 # Logs
