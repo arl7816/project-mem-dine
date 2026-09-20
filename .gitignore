@@ -1,3 +1,8 @@
+# general
+.env
+/mem-dine-backend/venv
+
+
 # Logs
 logs
 *.log
