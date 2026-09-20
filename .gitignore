@@ -2,6 +2,7 @@
 .env
 /mem-dine-backend/venv
 *.pyc
+/mem-dine-backend/db
 
 
 # Logs
