@@ -22,7 +22,10 @@ import LogIn from './components/LogIn.vue';
 }
 
 .link{
-  color: var(--color-persona-blue)
+  color: var(--color-persona-blue);
+  text-decoration: underline;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .link:hover{
