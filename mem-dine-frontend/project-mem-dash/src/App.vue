@@ -5,7 +5,7 @@ import LogIn from './components/LogIn.vue';
 
 <template>
   <header>
-    <LogIn />
+    <RouterView />
   </header>
 </template>
 
