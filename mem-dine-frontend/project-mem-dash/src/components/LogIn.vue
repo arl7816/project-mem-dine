@@ -8,11 +8,11 @@
         <div class="sign-in-fields">
             <label>Sign In</label>
             <!-- Input fields-->
-            <div>
+            <div class="input-fields">
                 <input placeholder="Username">
                 <input placeholder="Password">
             </div>
-            <RouterLink to="/create-account">Create Account</RouterLink>
+            <RouterLink class="link" to="/create-account">Create Account</RouterLink>
         </div>
         <!-- log in button -->
         <div>
@@ -27,6 +27,10 @@
     width: 584px;
     height: 433px;
     border-radius: 51px;
+}
+
+.input-fields{
+    display: grid;
 }
 
 .center{

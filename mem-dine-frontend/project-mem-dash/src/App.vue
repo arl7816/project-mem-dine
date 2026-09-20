@@ -20,4 +20,13 @@ import LogIn from './components/LogIn.vue';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.link{
+  color: var(--color-persona-blue)
+}
+
+.link:hover{
+  color: var(--color-persona-orange);
+}
+
 </style>
