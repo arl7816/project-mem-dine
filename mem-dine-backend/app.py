@@ -1,9 +1,12 @@
 # backend/app.py
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from functools import wraps
+
 
 from dataclasses import dataclass
 from typing import Any
+from settings import settings
 
 app = Flask(__name__)
 # Enable CORS so your Vue frontend can securely communicate with Flask
@@ -24,8 +27,6 @@ class ResponseObject:
     def error(message: str, status_code: int = 400) -> 'ResponseObject':
         """Quickly generate a standardized error payload."""
         return ResponseObject(status="error", status_code=status_code, data={"error": message})
-
-from functools import wraps
 
 def validate_response(func):
     @wraps(func)  # Keeps the original function's metadata intact
@@ -54,4 +55,4 @@ def helloWorld():
 
 # to get me started up run 'python app.py'
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=settings.port, debug=settings.debug)
