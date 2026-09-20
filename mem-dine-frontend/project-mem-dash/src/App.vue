@@ -9,6 +9,15 @@ import LogIn from './components/LogIn.vue';
   </header>
 </template>
 
-<style scoped>
+<style>
+@import './assets/base.css';
 
+@import url('https://googleapis.com');
+
+/* 2. Apply it globally to the body or app container */
+#app {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 </style>
