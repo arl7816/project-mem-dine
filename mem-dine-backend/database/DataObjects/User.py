@@ -2,12 +2,16 @@ from database.DataObjects.DataObject import DataBaseObject
 from sqlite3 import Connection
 from dataclasses import dataclass
 from datetime import datetime
+from sqlite3 import IntegrityError
+from typing import Optional
 
+from werkzeug.security import check_password_hash, generate_password_hash
+
+@dataclass(frozen=True, slots=True)
 class UserPackage:
     id: int
     name: str
-    password: str
-    cerated_at: datetime
+    created_at: datetime
 
 
 class User(DataBaseObject):
@@ -15,8 +19,12 @@ class User(DataBaseObject):
     def __init__(self):
         super().__init__()
 
-    def _package_factory(self, row: dict) -> UserPackage:
-        return UserPackage(*row)
+    def _package_factory(self, row: tuple) -> UserPackage:
+        return UserPackage(
+            id=row[0],
+            name=row[1],
+            created_at=datetime.fromisoformat(row[2]),
+        )
 
     def create(self, con: Connection) -> bool:
         con.cursor().execute("""
@@ -24,37 +32,56 @@ class User(DataBaseObject):
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        return True
 
     def exists(self, con: Connection, id: int = None, username: str = None) -> int:
         """Gets user id if they exists, if they don't return -1"""
-        where_statement = None
-        
         if id is not None:
-            where_statement = f"WHERE ID = {id}"
-
-        if username is not None:
-            where_statement = f"WHERE name = {username}"
-
-        if where_statement is None:
-            return -1 
-        
-        users = con.cursor().execute(f"SELECT id FROM User {where_statement}")
-        
-        if len(users) == 0:
+            row = con.execute(
+                "SELECT id FROM users WHERE id = ?", (id,)
+            ).fetchone()
+        elif username is not None:
+            username = username.strip().lower()
+            row = con.execute(
+                "SELECT id FROM users WHERE name = ?", (username,)
+            ).fetchone()
+        else:
             return -1
 
-        return users[0]["id"]   
+        return row[0] if row is not None else -1
 
-    def get_user(self, con: Connection, id: int) -> UserPackage:
-        users = con.cursor().execute(f"SELECT * FROM User WHERE id = {id}")
-        
-        if len(users) == 0:
+    def get_user(self, con: Connection, id: int) -> Optional[UserPackage]:
+        row = con.execute(
+            "SELECT id, name, created_at FROM users WHERE id = ?", (id,)
+        ).fetchone()
+
+        if row is None:
             return None
 
-        return self._package_factory(users[0])
+        return self._package_factory(row)
 
     def create_user(self, con: Connection, username: str, password: str) -> bool:
-        return False
+        username = username.strip().lower()
+        if not username or len(username) > 64 or not 12 <= len(password) <= 1024:
+            return False
+
+        password_hash = generate_password_hash(password)
+        try:
+            con.execute(
+                "INSERT INTO users (name, password) VALUES (?, ?)",
+                (username, password_hash),
+            )
+        except IntegrityError:
+            return False
+
+        con.commit()
+        return True
+
+    def verify_password(self, con: Connection, username: str, password: str) -> bool:
+        row = con.execute(
+            "SELECT password FROM users WHERE name = ?", (username,)
+        ).fetchone()
+        return row is not None and check_password_hash(row[0], password)
