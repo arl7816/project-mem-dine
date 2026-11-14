@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { userService } from '../../api/services/userService'
 
 const router = useRouter()
 
