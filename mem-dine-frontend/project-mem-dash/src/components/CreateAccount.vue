@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { userService } from '../../api/services/userService'
+import { userService, type ApiErrorResponse } from '../../api/services/userService'
 
 const router = useRouter()
 
@@ -34,7 +34,7 @@ function sendToLogInPage(){
 
 }
 
-function completeCreateAccount() {
+async function completeCreateAccount() {
     // Reset previous error
     errorMessage.value = ''
 
@@ -57,10 +57,21 @@ function completeCreateAccount() {
     }
 
     // step 3: attempt to create the user
+    const response = await userService.createUser({
+        username: username.value,
+        password: password.value
+    }); 
 
     // step 4: confirm it worked, if not, report issue
+    if (!response || response.status !== 'success') {
+        const errorData = response?.data as ApiErrorResponse
 
-    // step 5: send them to the log in page
+        errorMessage.value = errorData?.error ?? 'Something went wrong.'
+        return
+    }
+
+
+    // step 5: send them to the log in page as this must have worked
     router.push({
         name: 'login',
         query: {

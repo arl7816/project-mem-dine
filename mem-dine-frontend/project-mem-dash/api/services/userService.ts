@@ -14,6 +14,10 @@ export interface ApiResponse<T = unknown> {
     data: T
 }
 
+export interface ApiErrorResponse {
+    error: string
+}
+
 // User service
 export const userService = {
 

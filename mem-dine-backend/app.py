@@ -8,7 +8,7 @@ from settings import settings
 
 def create_app():
     application = Flask(__name__)
-    CORS(application, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+    CORS(application, resources={r"/*": {"origins": "http://localhost:5173"}})
     application.register_blueprint(user_blueprint)
     application.register_blueprint(health_blueprint)
     return application
