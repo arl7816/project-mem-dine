@@ -1,31 +1,129 @@
+
 <script setup lang="ts">
-// If needed, import RouterLink here depending on your project setup
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// Reactive form values
+const username = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+
+// Reactive error message
+const errorMessage = ref('')
+
+function hasConfirmInformationIsEntered(): any{
+    return username.value.trim() && password.value && confirmPassword.value; 
+}
+
+function checkPasswordLength(){
+    return password.value.length >= 12 && password.value.length <= 1024
+}
+
+function doPasswordsMatch(){
+    return password.value === confirmPassword.value; 
+}
+
+function createUser(): any{
+
+}
+
+function sendToLogInPage(){
+
+}
+
+function completeCreateAccount() {
+    // Reset previous error
+    errorMessage.value = ''
+
+    // step 1: confirm info is inputted correctly
+    if (hasConfirmInformationIsEntered() == false){
+        errorMessage.value = "Please complete all fields."
+        return
+    }
+
+    // step 2: confirm password strength
+    if (checkPasswordLength() == false){
+        errorMessage.value = "Password must be between 12 and 1024 characters"
+        return
+    }
+
+    // step 2: confirm passwords match
+    if (doPasswordsMatch() == false){
+        errorMessage.value = "Passwords must match"
+        return
+    }
+
+    // step 3: attempt to create the user
+
+    // step 4: confirm it worked, if not, report issue
+
+    // step 5: send them to the log in page
+    router.push({
+        name: 'login',
+        query: {
+            accept: 'Account Created. Please Attempt a sign in'
+        }
+    });
+
+}
 </script>
 
 <template>
     <div class="page-container">
-        <!-- General log in box -->
         <div class="log-in-box">
-            <!-- sign in portion (centered vertically and horizontally) -->
+
             <div class="sign-in-fields">
                 <h1 class="title">Create Account</h1>
-                <!-- Input fields-->
+
                 <div class="input-fields">
-                    <input type="text" placeholder="Username" class="text-input">
-                    <input type="password" placeholder="Password" class="text-input">
-                    <input type="password" placeholder="Confirm Password" class="text-input">
+                    <input
+                        v-model="username"
+                        type="text"
+                        placeholder="Username"
+                        class="text-input"
+                        @keydown.enter="completeCreateAccount"
+                    >
+
+                    <input
+                        v-model="password"
+                        type="password"
+                        placeholder="Password"
+                        class="text-input"
+                        @keydown.enter="completeCreateAccount"
+                    >
+
+                    <input
+                        v-model="confirmPassword"
+                        type="password"
+                        placeholder="Confirm Password"
+                        class="text-input"
+                        @keydown.enter="completeCreateAccount"
+                    >
                 </div>
+
+                <!-- Error message -->
+                <p v-if="errorMessage" class="error-message" role="alert">
+                    {{ errorMessage }}
+                </p>
+
                 <RouterLink class="link" to="/">Sign In</RouterLink>
             </div>
 
-            <!-- log in button wrapper (pushed to the bottom right) -->
             <div class="button-container">
-                <input type="button" value="Complete" class="log-in-button">
+                <input
+                    type="button"
+                    value="Create"
+                    class="log-in-button"
+                    @click="completeCreateAccount"
+                >
             </div>
+
         </div>
     </div>
-
 </template>
+
 
 <style scoped>
 /* Main Container Layout */
@@ -127,4 +225,5 @@
     background-color: #ffffff;
     /* Optional: background color for the screen */
 }
+
 </style>

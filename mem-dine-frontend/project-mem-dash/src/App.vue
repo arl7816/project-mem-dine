@@ -32,4 +32,19 @@ import LogIn from './components/LogIn.vue';
   color: var(--color-persona-orange);
 }
 
+.error-message {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.accept-message{
+  color: #006920;
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+  text-align: center;
+
+}
+
 </style>

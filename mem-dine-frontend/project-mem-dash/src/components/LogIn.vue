@@ -1,5 +1,16 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 // If needed, import RouterLink here depending on your project setup
+
+const errorMessage = ref('');
+const acceptMessage = ref('');
+
+onMounted(() => {
+    const params = new URLSearchParams(window.location.search);
+    acceptMessage.value = params.get('accept') || ""; 
+})
+
 </script>
 
 <template>
@@ -14,6 +25,18 @@
                     <input type="text" placeholder="Username" class="text-input">
                     <input type="password" placeholder="Password" class="text-input">
                 </div>
+
+                <!-- Error message -->
+                <p v-if="errorMessage" class="error-message" role="alert">
+                    {{ errorMessage }}
+                </p>
+
+                <!-- Error message -->
+                <p v-if="acceptMessage" class="accept-message" role="alert">
+                    {{ acceptMessage }}
+                </p>
+
+
                 <RouterLink class="link" to="/create-account">Create Account</RouterLink>
             </div>
 
@@ -23,7 +46,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <style scoped>

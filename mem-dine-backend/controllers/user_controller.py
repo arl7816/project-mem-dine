@@ -9,7 +9,7 @@ from services.user_service import (
 )
 
 
-user_blueprint = Blueprint("users", __name__, url_prefix="/api")
+user_blueprint = Blueprint("users", __name__, url_prefix="/user")
 
 
 def _read_credentials():
