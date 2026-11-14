@@ -81,6 +81,7 @@ class User(DataBaseObject):
         return True
 
     def verify_password(self, con: Connection, username: str, password: str) -> bool:
+        username = username.strip().lower()
         row = con.execute(
             "SELECT password FROM users WHERE name = ?", (username,)
         ).fetchone()

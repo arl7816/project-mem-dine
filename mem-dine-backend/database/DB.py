@@ -4,14 +4,19 @@ from database.DataObjects.User import User
 
 class _DatabaseConnection:
 
-    con: Final
+    database_path: Final[str]
 
     
     def __init__(self):
-        self.con = sqlite3.connect("app.db")
+        self.database_path = "app.db"
+        con = self.connect()
+        try:
+            User().create(con)
+        finally:
+            con.close()
 
-        # make sure all needed tables are created
-        User().create(self.con)
+    def connect(self) -> sqlite3.Connection:
+        return sqlite3.connect(self.database_path)
 
 
 database_connection = _DatabaseConnection()
