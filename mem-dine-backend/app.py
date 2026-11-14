@@ -6,6 +6,8 @@ from classes.api_classes import ResponseObject
 
 from helpers.validate_response import validate_response
 from settings import settings
+from database.DB import database_connection
+
 
 app = Flask(__name__)
 # Enable CORS so your Vue frontend can securely communicate with Flask
