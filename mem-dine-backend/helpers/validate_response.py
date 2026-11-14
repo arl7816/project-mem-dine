@@ -15,5 +15,5 @@ def validate_response(func):
             raise TypeError("API not returning a ResponseObject")
         
         # 4. Return the result
-        return jsonify(result)
+        return jsonify(result), result.status_code
     return wrapper
