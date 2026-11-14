@@ -16,6 +16,11 @@ const router = createRouter({
       name: 'create-account',
       // 2. Lazy-load the component (improves page load performance)
       component: () => import('../components/CreateAccount.vue') 
+    },
+    {
+      path: '/dashboard',
+      name: "dashboard",
+      component: () => import('../components/Dashboard.vue')
     }
   ]
 })

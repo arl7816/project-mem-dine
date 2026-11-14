@@ -26,12 +26,13 @@ function doPasswordsMatch(){
     return password.value === confirmPassword.value; 
 }
 
-function createUser(): any{
-
-}
-
 function sendToLogInPage(){
-
+    router.push({
+        name: 'login',
+        query: {
+            accept: 'Account Created. Please Attempt a sign in'
+        }
+    });
 }
 
 async function completeCreateAccount() {
@@ -65,20 +66,13 @@ async function completeCreateAccount() {
     // step 4: confirm it worked, if not, report issue
     if (!response || response.status !== 'success') {
         const errorData = response?.data as ApiErrorResponse
-
         errorMessage.value = errorData?.error ?? 'Something went wrong.'
         return
     }
 
 
-    // step 5: send them to the log in page as this must have worked
-    router.push({
-        name: 'login',
-        query: {
-            accept: 'Account Created. Please Attempt a sign in'
-        }
-    });
-
+    // step 5: send them to the log in page as this must have worker
+    sendToLogInPage();
 }
 </script>
 
