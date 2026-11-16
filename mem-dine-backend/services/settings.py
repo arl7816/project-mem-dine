@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     port: int = 5000
     redis_port: int = 6379
     debug: bool = True
+
+    jwt_token: str
+    jwt_seconds: int = 86400 # preserve token for one day
+
     
     # Use SettingsConfigDict to define global settings behaviors
     model_config = SettingsConfigDict(
