@@ -2,6 +2,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import InfoCard from './InfoCard.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const cards = ['Card 1', 'Card 2', 'Card 3']
 const selectedCard = ref<string | null>(null)
@@ -20,6 +23,17 @@ function closeDetails() {
 function clearSelection() {
     selectedCard.value = null
 }
+
+// TODO: this method still needs to be finished later
+function logOut(){
+    router.push({
+        name: 'login',
+        query: {
+            accept: 'You have been logged out'
+        }
+    })    
+}
+
 </script>
 
 <template>
@@ -29,7 +43,8 @@ function clearSelection() {
         </div>
         
         <div class="button-container">
-            <input type="button" value="Log Out" class="log-out-button">
+            <input type="button" value="Log Out" class="log-out-button"
+            @click="logOut">
         </div>
 
     </div>
