@@ -20,7 +20,7 @@ def _read_credentials():
     username = payload.get("username")
     password = payload.get("password")
     if not isinstance(username, str) or not isinstance(password, str):
-        return ResponseObject.error("Username and password are required")
+        return ResponseObject.error("Username and password are required", status_code=401)
 
     return username, password
 

@@ -1,15 +1,50 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { userService, type ApiErrorResponse } from '../../api/services/userService';
 
-// If needed, import RouterLink here depending on your project setup
+const router = useRouter();
+
 
 const errorMessage = ref('');
 const acceptMessage = ref('');
+
+const username = ref('');
+const password = ref(''); 
 
 onMounted(() => {
     const params = new URLSearchParams(window.location.search);
     acceptMessage.value = params.get('accept') || ""; 
 })
+
+// needs to be re-implemented once jwt is finished up
+async function logIn(){
+    acceptMessage.value = "";
+
+    const response = await userService.checkUser({
+            username: username.value,
+            password: password.value
+        }
+    )
+
+    if (response.status == 'success'){
+        // log in went well, send them that way
+        router.push({
+            name: "dashboard"
+        })
+        return
+    }
+
+    if (response.status_code == 401){
+        const errorData = response?.data as ApiErrorResponse
+        errorMessage.value = errorData?.error ?? 'Something went wrong.'
+        return
+    }
+
+    // all else fails, give them a generic message
+    errorMessage.value = "Something went wrong."
+    return
+}
 
 </script>
 
@@ -22,8 +57,8 @@ onMounted(() => {
                 <h1 class="title">Sign In</h1>
                 <!-- Input fields-->
                 <div class="input-fields">
-                    <input type="text" placeholder="Username" class="text-input">
-                    <input type="password" placeholder="Password" class="text-input">
+                    <input v-model="username" type="text" placeholder="Username" class="text-input">
+                    <input v-model="password" type="password" placeholder="Password" class="text-input">
                 </div>
 
                 <!-- Error message -->
@@ -42,7 +77,7 @@ onMounted(() => {
 
             <!-- log in button wrapper (pushed to the bottom right) -->
             <div class="button-container">
-                <input type="button" value="Log In" class="log-in-button">
+                <input type="button" value="Log In" class="log-in-button" @click="logIn">
             </div>
         </div>
     </div>
