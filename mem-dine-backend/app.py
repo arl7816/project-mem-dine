@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 from controllers.health_controller import health_blueprint
 from controllers.user_controller import user_blueprint
-from settings import settings
+from services.settings import settings
 
 def create_app():
     application = Flask(__name__)

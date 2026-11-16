@@ -16,7 +16,8 @@ class Settings(BaseSettings):
         env_file=".env",              # Read from a local .env file
         env_file_encoding="utf-8",    # Encoding for the file
         env_prefix="APP_",            # Forces fields to match APP_APP_ENV, APP_DATABASE_URL etc.
-        case_sensitive=False          # Case insensitivity configuration
+        case_sensitive=False,         # Case insensitivity configuration
+        extra="ignore"
     )
 
 # Instantiate settings
