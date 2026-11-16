@@ -1,5 +1,6 @@
 from database.DB import database_connection
 from database.DataObjects.User import User
+from services.jwt_manager import encode_jwt_token
 
 
 class InvalidUserDataError(ValueError):
@@ -49,8 +50,10 @@ class UserService:
             if user is None:
                 return None
 
+            token = encode_jwt_token({"id": str(user.id), "username": user.name})
             return {
                 "authenticated": True,
+                "token": token,
                 "user": {"id": user.id, "username": user.name},
             }
         finally:
