@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     api_timeout: int = 30
 
     port: int = 5000
+    redis_port: int = 6379
     debug: bool = True
     
     # Use SettingsConfigDict to define global settings behaviors
