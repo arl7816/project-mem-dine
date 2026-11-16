@@ -1,21 +1,12 @@
 
-import { API_BASE_URL, USER_ENDPOINTS } from '../apiEndpoints'
+import { USER_ENDPOINTS } from '../apiEndpoints'
+import type { ApiResponse } from '../apiClient'
+import { apiClient } from '../apiClient'
 
 // Request structure
 export interface UserCredentials {
     username: string
     password: string
-}
-
-// Backend response structure
-export interface ApiResponse<T = unknown> {
-    status: 'success' | 'error'
-    status_code: number
-    data: T
-}
-
-export interface ApiErrorResponse {
-    error: string
 }
 
 // User service
@@ -26,18 +17,10 @@ export const userService = {
         credentials: UserCredentials
     ): Promise<ApiResponse> {
 
-        const response = await fetch(
-            `${API_BASE_URL}${USER_ENDPOINTS.CREATE_USER}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(credentials)
-            }
+        return await apiClient.callEndpoint(
+            USER_ENDPOINTS.CREATE_USER,
+            credentials
         )
-
-        return await response.json()
     },
 
     // Check user credentials
@@ -45,17 +28,9 @@ export const userService = {
         credentials: UserCredentials
     ): Promise<ApiResponse> {
 
-        const response = await fetch(
-            `${API_BASE_URL}${USER_ENDPOINTS.CHECK_USER}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(credentials)
-            }
+        return await apiClient.callEndpoint(
+            USER_ENDPOINTS.CHECK_USER,
+            credentials
         )
-
-        return await response.json()
     }
 }

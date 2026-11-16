@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { userService, type ApiErrorResponse } from '../../api/services/userService';
+import { userService } from '../../api/services/userService';
+import { apiClient, type ApiErrorResponse } from '../../api/apiClient';
 
 const router = useRouter();
 
@@ -36,8 +37,7 @@ async function logIn(){
     }
 
     if (response.status_code == 401){
-        const errorData = response?.data as ApiErrorResponse
-        errorMessage.value = errorData?.error ?? 'Something went wrong.'
+        errorMessage.value = apiClient.extractErrorMessageFromResponse(response)
         return
     }
 

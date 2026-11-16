@@ -1,8 +1,9 @@
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { userService, type ApiErrorResponse } from '../../api/services/userService'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { userService } from '../../api/services/userService';
+import { apiClient, type ApiErrorResponse } from '../../api/apiClient';
 
 const router = useRouter()
 
@@ -65,8 +66,7 @@ async function completeCreateAccount() {
 
     // step 4: confirm it worked, if not, report issue
     if (!response || response.status !== 'success') {
-        const errorData = response?.data as ApiErrorResponse
-        errorMessage.value = errorData?.error ?? 'Something went wrong.'
+        errorMessage.value = apiClient.extractErrorMessageFromResponse(response);
         return
     }
 
