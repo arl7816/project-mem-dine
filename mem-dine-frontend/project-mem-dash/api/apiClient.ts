@@ -14,6 +14,7 @@ export interface ApiErrorResponse {
 
 export const apiClient = {
     
+    /** Calls a endpoint via the fetch method */
     async callEndpoint(
         endPoint: string,
         credentials: any,
@@ -31,6 +32,15 @@ export const apiClient = {
         )
 
         return await response.json()
+    },
+
+    /** Converts a error response to a string to read */
+    extractErrorMessageFromResponse(
+        response: ApiResponse, 
+        defaultMessage: string = "Something went wrong"
+    ): string{
+        const errorData = response?.data as ApiErrorResponse;
+        return errorData.error ?? defaultMessage;
     }
 
 }
