@@ -1,7 +1,25 @@
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import InfoCard from './InfoCard.vue'
 
+const cards = ['Card 1', 'Card 2', 'Card 3']
+const selectedCard = ref<string | null>(null)
+const detailsDialog = ref<HTMLDialogElement | null>(null)
 
+watch(selectedCard, (title) => {
+    if (title) {
+        detailsDialog.value?.showModal()
+    }
+})
+
+function closeDetails() {
+    detailsDialog.value?.close()
+}
+
+function clearSelection() {
+    selectedCard.value = null
+}
 </script>
 
 <template>
@@ -17,16 +35,34 @@
     </div>
 
     <div class="main-body">
-        <div class="card">
-            <p>Card 1</p>
-        </div>
-        <div class="card">
-            <p>Card 2</p>
-        </div>
-        <div class="card">
-            <p>Card 3</p>
-        </div>
+        <InfoCard
+            v-for="card in cards"
+            :key="card"
+            :title="card"
+            @select="selectedCard = $event"
+        />
     </div>
+
+    <dialog
+        ref="detailsDialog"
+        class="details-dialog"
+        aria-labelledby="details-title"
+        @click.self="closeDetails"
+        @close="clearSelection"
+    >
+        <button class="close-button" type="button" aria-label="Close details" @click="closeDetails">
+            &times;
+        </button>
+        <h2 id="details-title">{{ selectedCard }}</h2>
+        <div class="description">
+            <p>This is a description</p>
+        </div>
+        <div class="links">
+            <p>Links <span aria-hidden="true">&#128279;</span></p>
+            <a href="#link-1" @click.prevent>Link 1</a>
+            <a href="#link-2" @click.prevent>Link 2</a>
+        </div>
+    </dialog>
 
     <div class="footer">
 
@@ -43,39 +79,6 @@
     align-items: center;
     min-height: 100vh;
     gap: 1vh;
-}
-
-.card{
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    width: min(55%, 32rem);
-    border: 1.5px solid var(--color-black);
-    border-radius: 5px;
-    min-height: 50px;
-    padding: 0 12px;
-    transition:
-        width 500ms ease,
-        min-height 500ms ease,
-        margin 500ms ease,
-        box-shadow 500ms ease;
-}
-
-.card p {
-    margin: 0;
-    transition: font-size 500ms ease;
-}
-
-.card:hover {
-    width: min(65%, 38rem);
-    min-height: 72px;
-    margin-block: 8px;
-    box-shadow: 0 5px 14px rgb(0 23 54 / 14%);
-    z-index: 1;
-}
-
-.card:hover p {
-    font-size: 1.25rem;
 }
 
 .title {
@@ -118,6 +121,72 @@
     font-weight: 500;
     box-sizing: border-box;
     cursor: pointer;
+}
+
+.details-dialog {
+    box-sizing: border-box;
+    width: min(90vw, 32rem);
+    max-width: none;
+    padding: 2rem 1rem 1.5rem;
+    overflow: visible;
+    border: 0;
+    background: var(--color-white);
+    color: var(--color-black);
+}
+
+.details-dialog::backdrop {
+    background: rgb(0 0 0 / 45%);
+}
+
+.close-button {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-persona-dark);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.details-dialog h2 {
+    margin: 0 0 1.5rem;
+    padding: 0 0 0.15rem 0.35rem;
+    border-bottom: 1px solid var(--color-black);
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.description {
+    display: flex;
+    min-height: 11rem;
+    align-items: center;
+    padding: 0.4rem;
+    border: 1.5px solid var(--color-persona-dark);
+    border-radius: 9px;
+}
+
+.description p {
+    margin: 0;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0 0.2rem;
+}
+
+.links p {
+    margin: 0;
+}
+
+.links a {
+    color: #0085a3;
+    font-style: italic;
+    text-decoration: underline;
 }
 
 </style>
