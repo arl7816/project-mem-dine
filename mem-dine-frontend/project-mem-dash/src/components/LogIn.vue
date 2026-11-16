@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { userService, type ApiErrorResponse } from '../../api/services/userService';
+import { userService } from '../../api/services/userService';
+import { type ApiErrorResponse } from '../../api/apiClient';
 
 const router = useRouter();
 
