@@ -2,6 +2,7 @@
 import { USER_ENDPOINTS } from '../apiEndpoints'
 import type { ApiResponse } from '../apiClient'
 import { apiClient } from '../apiClient'
+import type { Api } from '@vitejs/plugin-vue'
 
 // Request structure
 export interface UserCredentials {
@@ -32,5 +33,29 @@ export const userService = {
             USER_ENDPOINTS.CHECK_USER,
             credentials
         )
+    },
+
+    async login(
+        credentials: UserCredentials
+    ): Promise<ApiResponse>{
+        return await apiClient.callEndpoint(
+            USER_ENDPOINTS.LOGIN,
+            credentials
+        )
+    },
+
+    async logout(): Promise<ApiResponse>{
+        return await apiClient.callEndpoint(
+            USER_ENDPOINTS.LOGOUT,
+            {}
+        )
+    },
+
+    async me(): Promise<ApiResponse>{
+        return await apiClient.getEndpoint(
+            USER_ENDPOINTS.ME,
+            "include"
+        )
     }
+
 }

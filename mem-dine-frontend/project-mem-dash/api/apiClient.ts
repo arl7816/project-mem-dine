@@ -15,19 +15,36 @@ export interface ApiErrorResponse {
 export const apiClient = {
     
     /** Calls a endpoint via the fetch method */
-    async callEndpoint(
+    async getEndpoint(
         endPoint: string,
-        credentials: any,
-        methodType: string = "POST"
+        credentials: RequestCredentials = "include"
     ): Promise<ApiResponse>{
         const response = await fetch(
             `${API_BASE_URL}${endPoint}`,
             {
-                method: methodType,
+                method: "GET",
+                credentials: credentials
+            }
+        )
+
+        return await response.json()
+    },
+
+    /** Calls a endpoint via the fetch method */
+    async callEndpoint(
+        endPoint: string,
+        args: any,
+        credentials: RequestCredentials = "include"
+    ): Promise<ApiResponse>{
+        const response = await fetch(
+            `${API_BASE_URL}${endPoint}`,
+            {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(credentials)
+                credentials: credentials,
+                body: JSON.stringify(args)
             }
         )
 

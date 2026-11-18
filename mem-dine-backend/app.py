@@ -4,11 +4,11 @@ from flask_cors import CORS
 
 from controllers.health_controller import health_blueprint
 from controllers.user_controller import user_blueprint
-from settings import settings
+from services.settings import settings
 
 def create_app():
     application = Flask(__name__)
-    CORS(application, resources={r"/*": {"origins": "http://localhost:5173"}})
+    CORS(application, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
     application.register_blueprint(user_blueprint)
     application.register_blueprint(health_blueprint)
     return application

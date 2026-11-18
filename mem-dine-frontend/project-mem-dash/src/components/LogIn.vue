@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref , getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import { userService } from '../../api/services/userService';
-import { apiClient, type ApiErrorResponse } from '../../api/apiClient';
+import { apiClient } from '../../api/apiClient';
+
+const cookies = getCurrentInstance()?.proxy?.$cookies
 
 const router = useRouter();
 
@@ -22,7 +24,7 @@ onMounted(() => {
 async function logIn(){
     acceptMessage.value = "";
 
-    const response = await userService.checkUser({
+    const response = await userService.login({
             username: username.value,
             password: password.value
         }

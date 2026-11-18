@@ -1,5 +1,6 @@
 from database.DB import database_connection
 from database.DataObjects.User import User
+from services.jwt_manager import encode_jwt_token
 
 
 class InvalidUserDataError(ValueError):
@@ -36,6 +37,15 @@ class UserService:
             connection.close()
 
     def check_user(self, username: str, password: str) -> dict | None:
+        authenticated_user = self.verify_user(username, password)
+        if authenticated_user is None:
+            return None
+
+        user = authenticated_user["user"]
+        token = encode_jwt_token({"id": str(user["id"]), "username": user["username"]})
+        return {**authenticated_user, "token": token}
+
+    def verify_user(self, username: str, password: str) -> dict | None:
         normalized_username = username.strip().lower()
         connection = database_connection.connect()
         try:
