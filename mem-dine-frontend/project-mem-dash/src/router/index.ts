@@ -1,6 +1,7 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import LogIn from '@/components/LogIn.vue'
+import { userService } from '../../api/services/userService.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +21,23 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: "dashboard",
+      meta: { requiresAuth: true },
       component: () => import('../components/Dashboard.vue')
     }
   ]
+})
+
+router.beforeEach(async (to) => {
+  if (to.meta.requiresAuth) {
+    try {
+      const response = await userService.me()
+      if (response.status !== 'success') {
+        return { name: 'login' }
+      }
+    } catch {
+      return { name: 'login' }
+    }
+  }
 })
 
 export default router

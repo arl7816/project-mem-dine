@@ -17,3 +17,7 @@ def check_jwt_token(token: str) -> dict[str, Any] | bool:
 		return False
 	return jwt.decode(stored_token, settings.jwt_token, algorithms=["HS256"])
 
+
+def revoke_jwt_token(token: str) -> bool:
+	return redis_manager.delete_key(token)
+

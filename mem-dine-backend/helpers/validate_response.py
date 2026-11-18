@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import jsonify
+from flask import Response, jsonify
 
 from classes.api_classes import ResponseObject
 
@@ -10,6 +10,9 @@ def validate_response(func):
         
         # 2. Execute the original function
         result = func(*args, **kwargs)
+
+        if isinstance(result, Response):
+            return result
         
         if not isinstance(result, ResponseObject):
             raise TypeError("API not returning a ResponseObject")

@@ -3,6 +3,7 @@
 import { ref, watch } from 'vue'
 import InfoCard from './InfoCard.vue'
 import { useRouter } from 'vue-router'
+import { userService } from '../../api/services/userService.ts';
 
 const router = useRouter();
 
@@ -25,13 +26,17 @@ function clearSelection() {
 }
 
 // TODO: this method still needs to be finished later
-function logOut(){
-    router.push({
-        name: 'login',
-        query: {
-            accept: 'You have been logged out'
-        }
-    })    
+async function logOut(){
+    const response = await userService.logout(); 
+
+    if (response.status = 'success'){
+        router.push({
+            name: 'login',
+            query: {
+                accept: 'You have been logged out'
+            }
+        })   
+    }
 }
 
 </script>

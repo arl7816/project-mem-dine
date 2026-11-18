@@ -22,7 +22,7 @@ def client(tmp_path, monkeypatch):
 def test_create_and_check_user_endpoints(client):
     password = "correct horse battery staple"
     response = client.post(
-        "/api/create_user",
+        "/user/create_user",
         json={"username": "Alice", "password": password},
     )
 
@@ -31,14 +31,14 @@ def test_create_and_check_user_endpoints(client):
     assert "password" not in response.json["data"]
 
     response = client.post(
-        "/api/check_user",
+        "/user/check_user",
         json={"username": "ALICE", "password": password},
     )
     assert response.status_code == 200
     assert response.json["data"]["authenticated"] is True
 
     response = client.post(
-        "/api/check_user",
+        "/user/check_user",
         json={"username": "alice", "password": "wrong password"},
     )
     assert response.status_code == 401
@@ -46,12 +46,12 @@ def test_create_and_check_user_endpoints(client):
 
 
 def test_user_endpoints_validate_input_and_duplicates(client):
-    response = client.post("/api/create_user", json={"username": "", "password": "short"})
+    response = client.post("/user/create_user", json={"username": "", "password": "short"})
     assert response.status_code == 400
 
     payload = {"username": "alice", "password": "correct horse battery staple"}
-    assert client.post("/api/create_user", json=payload).status_code == 201
-    assert client.post("/api/create_user", json=payload).status_code == 409
+    assert client.post("/user/create_user", json=payload).status_code == 201
+    assert client.post("/user/create_user", json=payload).status_code == 409
 
-    response = client.post("/api/check_user", json={"username": "alice"})
+    response = client.post("/user/check_user", json={"username": "alice"})
     assert response.status_code == 400
