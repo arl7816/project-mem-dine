@@ -23,7 +23,14 @@ const router = createRouter({
       name: "dashboard",
       meta: { requiresAuth: true },
       component: () => import('../components/Dashboard.vue')
-    }
+    },
+    {
+      // TODO: need to change this requiresAuth to true once implemented
+      path: '/grocery-list',
+      name: 'grocery-list',
+      meta: { requiresAuth: false },
+      component: () => import('../components/GroceryList.vue')
+    },
   ]
 })
 
