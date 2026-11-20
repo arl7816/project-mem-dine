@@ -25,7 +25,6 @@ function clearSelection() {
     selectedCard.value = null
 }
 
-// TODO: this method still needs to be finished later
 async function logOut(){
     const response = await userService.logout(); 
 
