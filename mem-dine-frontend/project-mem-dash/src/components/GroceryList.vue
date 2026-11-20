@@ -9,15 +9,23 @@ const bundles = ref([
 </script>
 
 <template>
-    <div>
+    <div class="bundles">
         <Bundle 
             v-for="bundle in bundles"
-            :key="bundle",
+            :key="bundle"
             :title="bundle"
         />
     </div>
 </template>
 
 <style scoped>
+
+.bundles{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 5px;
+    justify-content: center;
+}
 
 </style>
