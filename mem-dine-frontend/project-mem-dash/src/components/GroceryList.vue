@@ -23,9 +23,11 @@ const bundles = ref([
 .bundles{
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
+    align-content: center;
     gap: 5px;
     justify-content: center;
+    min-height: 100vh;
 }
 
 </style>
