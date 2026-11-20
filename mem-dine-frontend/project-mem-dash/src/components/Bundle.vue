@@ -29,8 +29,14 @@ defineProps<{
     border-radius: 0.5rem;
     background: #fffbea;
     color: var(--color-persona-dark);
+    cursor: grab;
     box-shadow: 0 2px 5px rgb(0 23 54 / 12%);
     transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.bundle-card.is-dragging {
+    opacity: 0.45;
+    cursor: grabbing;
 }
 
 .bundle-card:hover {
